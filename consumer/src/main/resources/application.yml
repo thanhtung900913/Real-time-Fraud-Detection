@@ -1,0 +1,25 @@
+server:
+  port: 8080
+spring:
+  kafka:
+    bootstrap-servers: ${BOOTSTRAP_SERVERS}
+    properties:
+      security.protocol: SASL_SSL
+      sasl.mechanism: PLAIN
+      sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="${USERNAME}" password="${PASSWORD}";
+    consumer:
+      group-id: ${GROUP_ID}
+      auto-offset-reset: earliest
+      key-deserializer: org.apache.kafka.common.serialization.IntegerDeserializer
+      value-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+  datasource:
+    url: jdbc:mysql://localhost:3306/transactions
+    username: root
+    password:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+topic:
+  name: balance_check_command
