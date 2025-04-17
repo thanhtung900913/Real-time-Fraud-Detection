@@ -1,20 +1,25 @@
 package com.java.producer.transaction_producer;
-
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.java.producer.domain.TransactionRecord;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
+import org.springframework.stereotype.Component;
 
 import java.util.concurrent.CompletableFuture;
-@Slf4j
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+@Component
 public class TransactionProducer {
-    private String topic;
-    @Autowired
+    private final Logger log = LoggerFactory.getLogger(TransactionProducer.class);
+
+    private final String topic = "balance_check_command";
     private KafkaTemplate<Long, String> kafkaTemplate;
     private ObjectMapper objectMapper;
+    public TransactionProducer(KafkaTemplate<Long, String> kafkaTemplate, ObjectMapper objectMapper){
+        this.kafkaTemplate = kafkaTemplate;
+        this.objectMapper = objectMapper;
+    }
     public CompletableFuture<SendResult<Long, String>> sendTransaction(TransactionRecord transactionRecord) throws JsonProcessingException {
         Long key = transactionRecord.cc_num();
         String value = objectMapper.writeValueAsString(transactionRecord);
