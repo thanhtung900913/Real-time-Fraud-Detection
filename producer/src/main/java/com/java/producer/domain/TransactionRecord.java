@@ -11,7 +11,7 @@ public record TransactionRecord(
         String state,
         Integer zip,
         Double lat,
-        Double _long,
+        Double longitude,
         Integer city_pop,
         String job,
         Double merch_lat,

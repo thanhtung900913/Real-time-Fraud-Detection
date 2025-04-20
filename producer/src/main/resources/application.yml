@@ -1,6 +1,5 @@
 server:
-  port: 8080
-
+  port: 8085
 spring:
   kafka:
     bootstrap-servers: ${BOOTSTRAP_SERVERS}
@@ -9,8 +8,9 @@ spring:
       sasl.mechanism: PLAIN
       sasl.jaas.config: org.apache.kafka.common.security.plain.PlainLoginModule required username="${USERNAME}" password="${PASSWORD}";
     producer:
+      group-id: $Default
+      auto-offset-reset: earliest
       key-serializer: org.apache.kafka.common.serialization.LongSerializer
       value-serializer: org.apache.kafka.common.serialization.StringSerializer
-
 topic:
   name: balance_check_command
